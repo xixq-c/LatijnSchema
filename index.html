@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" href="icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Latijn Schema</title>
+<title>Latijn Grammatica - Oefenen</title>
 <style>
   * { box-sizing: border-box; }
   body { 
@@ -21,236 +21,94 @@
   }
   
   .mobiel-header {
-    display: none;
-    background-color: #2c3e50;
-    color: white;
-    padding: 15px 20px;
-    width: 100%;
-    align-items: center;
-    position: fixed;
-    top: 0; left: 0;
-    z-index: 100;
+    display: none; background-color: #2c3e50; color: white;
+    padding: 15px 20px; width: 100%; align-items: center;
+    position: fixed; top: 0; left: 0; z-index: 100;
   }
   .hamburger {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 0;
-    margin-right: 15px;
+    background: none; border: none; color: white; font-size: 24px;
+    cursor: pointer; padding: 0; margin-right: 15px;
   }
-  .mobiel-titel {
-    font-size: 18px;
-    font-weight: bold;
-  }
+  .mobiel-titel { font-size: 18px; font-weight: bold; }
 
   .zijbalk {
-    width: 260px;
-    background-color: #2c3e50;
-    color: white;
-    padding: 30px 20px;
-    flex-shrink: 0;
-    transition: transform 0.3s ease;
-    z-index: 200;
+    width: 260px; background-color: #2c3e50; color: white;
+    padding: 30px 20px; flex-shrink: 0; transition: transform 0.3s ease; z-index: 200;
   }
   .sluit-menu {
-    display: none;
-    background: none;
-    border: none;
-    color: #ecf0f1;
-    font-size: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-bottom: 20px;
-    text-align: left;
-    padding: 0;
+    display: none; background: none; border: none; color: #ecf0f1;
+    font-size: 20px; font-weight: bold; cursor: pointer;
+    margin-bottom: 20px; text-align: left; padding: 0;
   }
-  .zijbalk-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+  .zijbalk-nav { display: flex; flex-direction: column; gap: 8px; }
   .zijbalk-nav a {
-    display: block;
-    background-color: #34495e;
-    color: #ecf0f1;
-    text-decoration: none;
-    padding: 12px 15px;
-    border-radius: 6px;
-    font-weight: bold;
-    border: 1px solid #2c3e50;
-    transition: 0.2s;
+    display: block; background-color: #34495e; color: #ecf0f1;
+    text-decoration: none; padding: 12px 15px; border-radius: 6px;
+    font-weight: bold; border: 1px solid #2c3e50; transition: 0.2s;
   }
   .zijbalk-nav a:hover { background-color: #3b536b; }
-  .zijbalk-nav a.actief {
-    background-color: #3498db;
-    border-color: #2980b9;
-    color: white;
-  }
-  .filter-menu {
-    margin-top: 40px;
-    background: #1a252f;
-    padding: 15px;
-    border-radius: 6px;
-  }
-  details summary {
-    font-weight: bold;
-    cursor: pointer;
-    list-style: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    user-select: none;
-  }
+  .zijbalk-nav a.actief { background-color: #3498db; border-color: #2980b9; color: white; }
+  
+  .filter-menu { margin-top: 40px; background: #1a252f; padding: 15px; border-radius: 6px; }
+  details summary { font-weight: bold; cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; user-select: none; }
   details summary::-webkit-details-marker { display: none; }
-  .filter-groep {
-    margin-top: 15px;
-    padding-top: 10px;
-    border-top: 1px solid #2c3e50;
+  .filter-groep { margin-top: 15px; padding-top: 10px; border-top: 1px solid #2c3e50; }
+  .filter-groep strong { display: block; margin-bottom: 10px; font-size: 13px; color: #bdc3c7; text-transform: uppercase; }
+  label.checkbox-label { display: flex; align-items: center; font-size: 14px; margin-bottom: 8px; cursor: pointer; color: #ecf0f1; }
+  label.checkbox-label input[type="checkbox"] {
+    appearance: none; -webkit-appearance: none; width: 18px; height: 18px;
+    border: 2px solid #7f8c8d; border-radius: 4px; outline: none; cursor: pointer;
+    position: relative; background-color: transparent; margin-right: 10px; transition: 0.1s;
   }
-  .filter-groep strong {
-    display: block;
-    margin-bottom: 10px;
-    font-size: 13px;
-    color: #bdc3c7;
-    text-transform: uppercase;
-  }
-  label {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    margin-bottom: 8px;
-    cursor: pointer;
-    color: #ecf0f1;
-  }
-  label input[type="checkbox"] {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
-    border: 2px solid #7f8c8d;
-    border-radius: 4px;
-    outline: none;
-    cursor: pointer;
-    position: relative;
-    background-color: transparent;
-    margin-right: 10px;
-    transition: 0.1s;
-  }
-  label input[type="checkbox"]:checked {
-    background-color: #3498db;
-    border-color: #3498db;
-  }
-  label input[type="checkbox"]:checked::after {
-    content: '';
-    position: absolute;
-    left: 4px;
-    top: 1px;
-    width: 4px;
-    height: 9px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
+  label.checkbox-label input[type="checkbox"]:checked { background-color: #3498db; border-color: #3498db; }
+  label.checkbox-label input[type="checkbox"]:checked::after {
+    content: ''; position: absolute; left: 4px; top: 1px; width: 4px; height: 9px;
+    border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg);
   }
 
   .hoofdinhoud {
-    flex: 1;
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center;
-    align-items: center; 
-    padding: 20px;
-    overflow-x: hidden;
+    flex: 1; display: flex; flex-direction: column; justify-content: center;
+    align-items: center; padding: 20px; overflow-x: hidden;
   }
-  .leeg-bericht {
-    display: none;
-    font-size: 24px;
-    font-weight: bold;
-    color: #cbd5e1;
-    text-align: center;
-  }
+  .leeg-bericht { display: none; font-size: 24px; font-weight: bold; color: #cbd5e1; text-align: center; }
   .oefen-card {
-    background: white;
-    padding: 30px 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    width: 100%;
-    max-width: 500px;
+    background: white; padding: 30px 40px; border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05); width: 100%; max-width: 500px;
   }
   
-  h2 { 
-    margin-top: 0;
-    margin-bottom: 5px;
-    text-align: center;
-    font-size: 26px;
-    color: #2c3e50;
-  }
-  .schema-subtitel {
-    font-size: 15px;
-    font-weight: bold;
-    color: #7f8c8d;
-    text-align: center;
-    margin-bottom: 25px;
-  }
+  h2 { margin-top: 0; margin-bottom: 5px; text-align: center; font-size: 26px; color: #2c3e50; }
+  .schema-subtitel { font-size: 15px; font-weight: bold; color: #7f8c8d; text-align: center; margin-bottom: 25px; }
 
-  .grid { 
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    gap: 20px; 
-    width: 100%;
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
+  .column { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .kolom-titel { text-align: center; font-size: 13px; color: #7f8c8d; font-weight: bold; margin-bottom: 5px; text-transform: uppercase; }
+  
+  /* Input Wrapper met Prefix Styling */
+  .input-wrapper {
+    display: flex; align-items: center; background: white;
+    border: 2px solid #bdc3c7; border-radius: 6px; overflow: hidden; transition: 0.2s;
   }
-  .column { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 10px; 
-    min-width: 0; 
+  .input-wrapper:focus-within { border-color: #3498db; }
+  .input-wrapper.correct { border-color: #2ecc71 !important; background-color: #eafaf1 !important; }
+  .input-wrapper.fout { border-color: #e74c3c !important; background-color: #fdedec !important; }
+  
+  .prefix {
+    padding-left: 12px; color: #7f8c8d; font-weight: bold; font-size: 14px; white-space: nowrap;
   }
-  .kolom-titel {
-    text-align: center;
-    font-size: 13px;
-    color: #7f8c8d;
-    font-weight: bold;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-  }
+  .input-wrapper.correct .prefix { color: #27ae60; }
+  .input-wrapper.fout .prefix { color: #c0392b; }
+
   input[type="text"] { 
-    width: 100%;
-    padding: 12px; 
-    font-size: 18px; 
-    text-align: center; 
-    border: 2px solid #bdc3c7; 
-    border-radius: 6px; 
-    outline: none; 
-    transition: 0.2s;
+    flex: 1; min-width: 0; padding: 12px; font-size: 18px; text-align: center; 
+    border: none; outline: none; background: transparent; color: #333;
   }
-  input[type="text"]:focus { border-color: #3498db; }
-  input.correct { 
-    border-color: #2ecc71 !important; 
-    background-color: #eafaf1 !important; 
-    color: #27ae60;
-  }
-  input.fout {
-    border-color: #e74c3c !important; 
-    background-color: #fdedec !important; 
-    color: #c0392b;
-  }
+  .input-wrapper.correct input { color: #27ae60; }
+  .input-wrapper.fout input { color: #c0392b; }
 
-  .actie-container {
-    display: flex;
-    justify-content: flex-end; 
-    margin-top: 25px;
-  }
+  .actie-container { display: flex; justify-content: flex-end; margin-top: 25px; }
   .actie-knop {
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
-    background-color: #3498db;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.2s;
+    padding: 10px 20px; font-size: 16px; font-weight: bold; color: white;
+    background-color: #3498db; border: none; border-radius: 6px; cursor: pointer; transition: 0.2s;
   }
   .actie-knop:hover { background-color: #2980b9; }
 
@@ -258,12 +116,8 @@
     .mobiel-header { display: flex; }
     .hoofdinhoud { padding-top: 80px; }
     .zijbalk {
-      position: fixed;
-      top: 0; left: 0;
-      height: 100vh;
-      width: 100%;
-      transform: translateX(-100%);
-      overflow-y: auto;
+      position: fixed; top: 0; left: 0; height: 100vh; width: 100%;
+      transform: translateX(-100%); overflow-y: auto;
     }
     .zijbalk.open { transform: translateX(0); }
     .sluit-menu { display: block; }
@@ -282,7 +136,6 @@
 
 <div class="zijbalk" id="zijbalk">
   <button class="sluit-menu" id="sluit-menu">&larr; Sluiten</button>
-  
   <div class="zijbalk-nav">
     <a href="index.html" class="actief">Oefenen</a>
     <a href="toets.html">Toetsen</a>
@@ -296,22 +149,26 @@
       </summary>
       <div class="filter-groep">
         <strong>Tijden</strong>
-        <label><input type="checkbox" name="tijd" value="Praesens" checked> Praesens</label>
-        <label><input type="checkbox" name="tijd" value="Imperfectum" checked> Imperfectum</label>
-        <label><input type="checkbox" name="tijd" value="Futurum" checked> Futurum</label>
-        <label><input type="checkbox" name="tijd" value="Perfectum" checked> Perfectum</label>
-        <label><input type="checkbox" name="tijd" value="Plusquamperfectum" checked> Plusquamperfectum</label>
-        <label><input type="checkbox" name="tijd" value="Futurum Exactum" checked> Futurum Exactum</label>
+        <label class="checkbox-label"><input type="checkbox" name="tijd" value="Praesens" checked> Praesens</label>
+        <label class="checkbox-label"><input type="checkbox" name="tijd" value="Imperfectum" checked> Imperfectum</label>
+        <label class="checkbox-label"><input type="checkbox" name="tijd" value="Futurum" checked> Futurum</label>
+        <label class="checkbox-label"><input type="checkbox" name="tijd" value="Perfectum" checked> Perfectum</label>
+        <label class="checkbox-label"><input type="checkbox" name="tijd" value="Plusquamperfectum" checked> Plusquamperfectum</label>
+        <label class="checkbox-label"><input type="checkbox" name="tijd" value="Futurum Exactum" checked> Futurum Exactum</label>
       </div>
       <div class="filter-groep">
         <strong>Wijs</strong>
-        <label><input type="checkbox" name="wijs" value="Indicativus" checked> Indicativus</label>
-        <label><input type="checkbox" name="wijs" value="Conjunctivus" checked> Conjunctivus</label>
+        <label class="checkbox-label"><input type="checkbox" name="wijs" value="Indicativus" checked> Indicativus</label>
+        <label class="checkbox-label"><input type="checkbox" name="wijs" value="Conjunctivus" checked> Conjunctivus</label>
       </div>
       <div class="filter-groep">
         <strong>Vorm</strong>
-        <label><input type="checkbox" name="vorm" value="Actief" checked> Actief</label>
-        <label><input type="checkbox" name="vorm" value="Passief" checked> Passief</label>
+        <label class="checkbox-label"><input type="checkbox" name="vorm" value="Actief" checked> Actief</label>
+        <label class="checkbox-label"><input type="checkbox" name="vorm" value="Passief" checked> Passief</label>
+      </div>
+      <div class="filter-groep">
+        <strong>Weergave</strong>
+        <label class="checkbox-label"><input type="checkbox" id="toggle-prefix" checked> Toon woord vooraan (bijv. PPP)</label>
       </div>
     </details>
   </div>
@@ -327,15 +184,15 @@
     <div class="grid">
       <div class="column">
         <div class="kolom-titel">Enkelvoud</div>
-        <input type="text" id="input-0" autocomplete="off">
-        <input type="text" id="input-1" autocomplete="off">
-        <input type="text" id="input-2" autocomplete="off">
+        <div class="input-wrapper" id="wrap-0"><span class="prefix" id="pref-0"></span><input type="text" id="input-0" autocomplete="off"></div>
+        <div class="input-wrapper" id="wrap-1"><span class="prefix" id="pref-1"></span><input type="text" id="input-1" autocomplete="off"></div>
+        <div class="input-wrapper" id="wrap-2"><span class="prefix" id="pref-2"></span><input type="text" id="input-2" autocomplete="off"></div>
       </div>
       <div class="column">
         <div class="kolom-titel">Meervoud</div>
-        <input type="text" id="input-3" autocomplete="off">
-        <input type="text" id="input-4" autocomplete="off">
-        <input type="text" id="input-5" autocomplete="off">
+        <div class="input-wrapper" id="wrap-3"><span class="prefix" id="pref-3"></span><input type="text" id="input-3" autocomplete="off"></div>
+        <div class="input-wrapper" id="wrap-4"><span class="prefix" id="pref-4"></span><input type="text" id="input-4" autocomplete="off"></div>
+        <div class="input-wrapper" id="wrap-5"><span class="prefix" id="pref-5"></span><input type="text" id="input-5" autocomplete="off"></div>
       </div>
     </div>
 
@@ -346,55 +203,56 @@
 </div>
 
 <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
-  }
+  if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
 
   document.getElementById('open-menu').onclick = () => document.getElementById('zijbalk').classList.add('open');
   document.getElementById('sluit-menu').onclick = () => document.getElementById('zijbalk').classList.remove('open');
 
-  const schema = {
-    "Praesens Indicativus Actief": ["o", "s", "t", "mus", "tis", "nt"],
-    "Praesens Conjunctivus Actief": ["m", "s", "t", "mus", "tis", "nt"],
-    "Imperfectum Indicativus Actief": ["bam", "bas", "bat", "bamus", "batis", "bant"],
-    "Imperfectum Conjunctivus Actief": ["rem", "res", "ret", "remus", "retis", "rent"],
-    "Futurum Indicativus Actief": ["bo", "bis", "bit", "bimus", "bitis", "bunt"],
-    "Perfectum Indicativus Actief": ["i", "isti", "it", "imus", "istis", "erunt"],
-    "Perfectum Conjunctivus Actief": ["erim", "eris", "erit", "erimus", "eritis", "erint"],
-    "Plusquamperfectum Indicativus Actief": ["eram", "eras", "erat", "eramus", "eratis", "erant"],
-    "Plusquamperfectum Conjunctivus Actief": ["issem", "isses", "isset", "issemus", "issetis", "issent"],
-    "Futurum Exactum Indicativus Actief": ["ero", "eris", "erit", "erimus", "eritis", "erint"],
-    "Praesens Indicativus Passief": ["or", "ris", "tur", "mur", "mini", "ntur"],
-    "Praesens Conjunctivus Passief": ["r", "ris", "tur", "mur", "mini", "ntur"],
-    "Imperfectum Indicativus Passief": ["bar", "baris", "batur", "bamur", "bamini", "bantur"],
-    "Imperfectum Conjunctivus Passief": ["rer", "reris", "retur", "remur", "remini", "rentur"],
-    "Futurum Indicativus Passief": ["bor", "beris", "bitur", "bimur", "bimini", "buntur"],
-    "Perfectum Indicativus Passief": ["sum", "es", "est", "sumus", "estis", "sunt"],
-    "Perfectum Conjunctivus Passief": ["sim", "sis", "sit", "simus", "sitis", "sint"],
-    "Plusquamperfectum Indicativus Passief": ["eram", "eras", "erat", "eramus", "eratis", "erant"],
-    "Plusquamperfectum Conjunctivus Passief": ["essem", "esses", "esset", "essemus", "essetis", "essent"],
-    "Futurum Exactum Indicativus Passief": ["ero", "eris", "erit", "erimus", "eritis", "erunt"]
+  const schemaData = {
+    "Praesens Indicativus Actief": { prefix: "", opties: [["o", "s", "t", "mus", "tis", "nt"]] },
+    "Praesens Conjunctivus Actief": { prefix: "", opties: [["am", "as", "at", "amus", "atis", "ant"], ["em", "es", "et", "emus", "etis", "ent"]] },
+    "Imperfectum Indicativus Actief": { prefix: "", opties: [["bam", "bas", "bat", "bamus", "batis", "bant"]] },
+    "Imperfectum Conjunctivus Actief": { prefix: "hele ww + ", opties: [["m", "s", "t", "mus", "tis", "nt"]] },
+    "Futurum Indicativus Actief": { prefix: "", opties: [["am", "es", "et", "emus", "etis", "ent"], ["bo", "bis", "bit", "bimus", "bitis", "bunt"]] },
+    "Perfectum Indicativus Actief": { prefix: "", opties: [["i", "isti", "it", "imus", "istis", "erunt"]] },
+    "Perfectum Conjunctivus Actief": { prefix: "", opties: [["erim", "eris", "erit", "erimus", "eritis", "erint"]] },
+    "Plusquamperfectum Indicativus Actief": { prefix: "", opties: [["eram", "eras", "erat", "eramus", "eratis", "erant"]] },
+    "Plusquamperfectum Conjunctivus Actief": { prefix: "ww+isse + ", opties: [["m", "s", "t", "mus", "tis", "nt"]] },
+    "Futurum Exactum Indicativus Actief": { prefix: "", opties: [["ero", "eris", "erit", "erimus", "eritis", "erint"]] },
+    
+    "Praesens Indicativus Passief": { prefix: "", opties: [["or", "ris", "tur", "mur", "mini", "ntur"]] },
+    "Praesens Conjunctivus Passief": { prefix: "", opties: [["ar", "aris", "atur", "amur", "amini", "antur"], ["er", "eris", "etur", "emur", "emini", "entur"]] },
+    "Imperfectum Indicativus Passief": { prefix: "", opties: [["bar", "baris", "batur", "bamur", "bamini", "bantur"]] },
+    "Imperfectum Conjunctivus Passief": { prefix: "hele ww + ", opties: [["r", "ris", "tur", "mur", "mini", "ntur"]] },
+    "Futurum Indicativus Passief": { prefix: "", opties: [["ar", "eris", "etur", "emur", "emini", "entur"], ["bor", "beris", "bitur", "bimur", "bimini", "buntur"]] },
+    "Perfectum Indicativus Passief": { prefix: "PPP + ", opties: [["sum", "es", "est", "sumus", "estis", "sunt"]] },
+    "Perfectum Conjunctivus Passief": { prefix: "PPP + ", opties: [["sim", "sis", "sit", "simus", "sitis", "sint"]] },
+    "Plusquamperfectum Indicativus Passief": { prefix: "PPP + ", opties: [["eram", "eras", "erat", "eramus", "eratis", "erant"]] },
+    "Plusquamperfectum Conjunctivus Passief": { prefix: "PPP + ", opties: [["essem", "esses", "esset", "essemus", "essetis", "essent"]] },
+    "Futurum Exactum Indicativus Passief": { prefix: "PPP + ", opties: [["ero", "eris", "erit", "erimus", "eritis", "erunt"]] }
   };
 
-  const alleTitels = Object.keys(schema);
+  const alleTitels = Object.keys(schemaData);
   let huidigeTitel = "";
-  let huidigeAntwoorden = [];
+  let huidigeOpties = [];
+  let actieveOptieIndex = -1; // -1 betekent: de gebruiker mag nog kiezen
   let correcteAantallen = 0;
   let toonAntwoordenModus = false;
+  
   const inputs = [];
-
+  const wrappers = [];
+  const prefixes = [];
   for (let i = 0; i < 6; i++) {
     inputs.push(document.getElementById(`input-${i}`));
+    wrappers.push(document.getElementById(`wrap-${i}`));
+    prefixes.push(document.getElementById(`pref-${i}`));
   }
 
   function splitsTitel(volledigeTitel) {
     const tijden = ["Praesens", "Imperfectum", "Futurum Exactum", "Futurum", "Perfectum", "Plusquamperfectum"];
     let gevondenTijd = "";
     for (let t of tijden) {
-      if (volledigeTitel.includes(t)) {
-        gevondenTijd = t;
-        break;
-      }
+      if (volledigeTitel.includes(t)) { gevondenTijd = t; break; }
     }
     return { tijd: gevondenTijd, sub: volledigeTitel.replace(gevondenTijd, "").trim() };
   }
@@ -403,9 +261,10 @@
     toonAntwoordenModus = false;
     document.getElementById('doorgaan-knop').innerHTML = "Doorgaan &rarr;";
 
-    const tijden = Array.from(document.querySelectorAll('input[name="tijd"]:checked')).map(cb => cb.value);
-    const wijzen = Array.from(document.querySelectorAll('input[name="wijs"]:checked')).map(cb => cb.value);
-    const vormen = Array.from(document.querySelectorAll('input[name="vorm"]:checked')).map(cb => cb.value);
+    const tijden = Array.from(document.querySelectorAll('.filter-groep input[name="tijd"]:checked')).map(cb => cb.value);
+    const wijzen = Array.from(document.querySelectorAll('.filter-groep input[name="wijs"]:checked')).map(cb => cb.value);
+    const vormen = Array.from(document.querySelectorAll('.filter-groep input[name="vorm"]:checked')).map(cb => cb.value);
+    const toonPrefix = document.getElementById('toggle-prefix').checked;
 
     const gefilterdeTitels = alleTitels.filter(titel => {
       const heeftTijd = tijden.some(t => {
@@ -435,7 +294,8 @@
     leegBericht.style.display = 'none';
 
     huidigeTitel = gefilterdeTitels[Math.floor(Math.random() * gefilterdeTitels.length)];
-    huidigeAntwoorden = schema[huidigeTitel];
+    huidigeOpties = schemaData[huidigeTitel].opties;
+    actieveOptieIndex = -1; 
     
     const splitsing = splitsTitel(huidigeTitel);
     document.getElementById('titel-tijd').textContent = splitsing.tijd;
@@ -443,11 +303,18 @@
     
     correcteAantallen = 0;
 
-    inputs.forEach(input => {
-      input.value = "";
-      input.disabled = false;
-      input.classList.remove('correct', 'fout');
-    });
+    for (let i = 0; i < 6; i++) {
+      inputs[i].value = "";
+      inputs[i].disabled = false;
+      wrappers[i].className = 'input-wrapper';
+      
+      if (toonPrefix && schemaData[huidigeTitel].prefix !== "") {
+        prefixes[i].textContent = schemaData[huidigeTitel].prefix;
+        prefixes[i].style.display = 'block';
+      } else {
+        prefixes[i].style.display = 'none';
+      }
+    }
     inputs[0].focus();
   }
 
@@ -456,12 +323,13 @@
       startNieuweRonde();
     } else {
       let allesAlGoed = true;
+      let optieTeTonen = actieveOptieIndex !== -1 ? actieveOptieIndex : 0; // Gebruik de gekozen variant, of de eerste
+      
       inputs.forEach((input, index) => {
-        if (input.value.trim().toLowerCase() !== huidigeAntwoorden[index]) {
+        if (!wrappers[index].classList.contains('correct')) {
           allesAlGoed = false;
-          input.classList.remove('correct');
-          input.classList.add('fout');
-          input.value = huidigeAntwoorden[index];
+          wrappers[index].classList.add('fout');
+          input.value = huidigeOpties[optieTeTonen][index];
           input.disabled = true;
         }
       });
@@ -484,8 +352,25 @@
       if (toonAntwoordenModus) return; 
 
       const ingevuldeWaarde = e.target.value.trim().toLowerCase();
-      if (ingevuldeWaarde === huidigeAntwoorden[index]) {
-        input.classList.add('correct');
+      let isCorrect = false;
+
+      // Als de gebruiker nog geen variant heeft gekozen (bijv ar vs er)
+      if (actieveOptieIndex === -1) {
+        for (let i = 0; i < huidigeOpties.length; i++) {
+          if (ingevuldeWaarde === huidigeOpties[i][index]) {
+            actieveOptieIndex = i; // Nu zit de gebruiker vast aan deze variant
+            isCorrect = true;
+            break;
+          }
+        }
+      } else {
+        if (ingevuldeWaarde === huidigeOpties[actieveOptieIndex][index]) {
+          isCorrect = true;
+        }
+      }
+
+      if (isCorrect) {
+        wrappers[index].classList.add('correct');
         input.disabled = true;
         correcteAantallen++;
         if (correcteAantallen === 6) {

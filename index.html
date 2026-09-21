@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2c3e50">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Latijn Schema - Oefenen</title>
 <style>
   * { box-sizing: border-box; }
@@ -15,7 +20,6 @@
     color: #333;
   }
   
-  /* Mobiele Topbalk */
   .mobiel-header {
     display: none;
     background-color: #2c3e50;
@@ -41,7 +45,6 @@
     font-weight: bold;
   }
 
-  /* Zijbalk */
   .zijbalk {
     width: 260px;
     background-color: #2c3e50;
@@ -151,7 +154,6 @@
     transform: rotate(45deg);
   }
 
-  /* Inhoud */
   .hoofdinhoud {
     flex: 1;
     display: flex; 
@@ -252,7 +254,6 @@
   }
   .actie-knop:hover { background-color: #2980b9; }
 
-  /* Mobiele Weergave */
   @media (max-width: 768px) {
     .mobiel-header { display: flex; }
     .hoofdinhoud { padding-top: 80px; }
@@ -345,7 +346,10 @@
 </div>
 
 <script>
-  // Mobiel menu toggle
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
+
   document.getElementById('open-menu').onclick = () => document.getElementById('zijbalk').classList.add('open');
   document.getElementById('sluit-menu').onclick = () => document.getElementById('zijbalk').classList.remove('open');
 

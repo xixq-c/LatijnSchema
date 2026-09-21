@@ -1,9 +1,10 @@
-const CACHE_NAME = 'latijn-schema-v1';
+const CACHE_NAME = 'latijn-schema-v2';
 const urlsToCache = [
   './',
   './index.html',
   './toets.html',
-  './manifest.json'
+  './manifest.json',
+  './icon.png'
 ];
 
 self.addEventListener('install', event => {

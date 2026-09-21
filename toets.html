@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2c3e50">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Latijn Grammatica - Toetsen</title>
 <style>
   * { box-sizing: border-box; }
@@ -15,7 +20,6 @@
     color: #333;
   }
 
-  /* Mobiele Topbalk */
   .mobiel-header {
     display: none;
     background-color: #2c3e50;
@@ -176,45 +180,6 @@
     max-width: 500px;
     margin-bottom: 90px; 
   }
-
-  .slider-container {
-    display: none; 
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 25px;
-    font-weight: bold;
-    color: #34495e;
-    font-size: 14px;
-  }
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 46px;
-    height: 24px;
-  }
-  .switch input { opacity: 0; width: 0; height: 0; }
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: #bdc3c7;
-    transition: .3s;
-    border-radius: 24px;
-  }
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 18px;
-    width: 18px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: .3s;
-    border-radius: 50%;
-  }
-  input:checked + .slider { background-color: #3498db; }
-  input:checked + .slider:before { transform: translateX(22px); }
   
   h2 { 
     margin-top: 0;
@@ -229,6 +194,16 @@
     color: #7f8c8d;
     text-align: center;
     margin-bottom: 25px;
+  }
+  .schema-sectie {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ecf0f1;
+  }
+  .schema-sectie:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
   }
 
   .grid { 
@@ -282,8 +257,10 @@
 
   .actie-container {
     display: flex;
+    align-items: center;
     justify-content: flex-end; 
     margin-top: 20px;
+    width: 100%;
   }
   .actie-knop {
     padding: 10px 20px;
@@ -299,6 +276,46 @@
   .actie-knop:hover { background-color: #2980b9; }
   #herstart-knop { background-color: #7f8c8d; display: none; }
   #herstart-knop:hover { background-color: #95a5a6; }
+
+  .slider-container {
+    display: none; 
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: #34495e;
+    font-size: 14px;
+    margin-right: auto; 
+  }
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 20px;
+  }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #cbd5e1;
+    transition: .3s;
+    border-radius: 20px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  }
+  input:checked + .slider { background-color: #3498db; }
+  input:checked + .slider:before { transform: translateX(16px); }
 
   .woots-balk {
     display: none; 
@@ -415,37 +432,40 @@
   <div id="leeg-bericht" class="leeg-bericht">Selecteer een tijd/wijs/vorm</div>
 
   <div id="toets-container" class="toets-card">
-    
-    <div id="slider-container" class="slider-container">
-      <span>Jouw antwoorden</span>
-      <label class="switch">
-        <input type="checkbox" id="correct-slider">
-        <span class="slider"></span>
-      </label>
-      <span>Correcte antwoorden</span>
-    </div>
+    <h2 id="hoofd-titel">Laden...</h2>
 
-    <h2 id="titel-tijd">Laden...</h2>
-    <div id="titel-sub" class="schema-subtitel"></div>
-
-    <div class="grid">
-      <div class="column">
-        <div class="kolom-titel">Enkelvoud</div>
-        <input type="text" id="input-0" autocomplete="off">
-        <input type="text" id="input-1" autocomplete="off">
-        <input type="text" id="input-2" autocomplete="off">
-      </div>
-      <div class="column">
-        <div class="kolom-titel">Meervoud</div>
-        <input type="text" id="input-3" autocomplete="off">
-        <input type="text" id="input-4" autocomplete="off">
-        <input type="text" id="input-5" autocomplete="off">
+    <!-- Tijdens toetsen tonen we 1 schema -->
+    <div id="vraag-sectie">
+      <div id="titel-sub" class="schema-subtitel"></div>
+      <div class="grid">
+        <div class="column">
+          <div class="kolom-titel">Enkelvoud</div>
+          <input type="text" id="input-0" autocomplete="off">
+          <input type="text" id="input-1" autocomplete="off">
+          <input type="text" id="input-2" autocomplete="off">
+        </div>
+        <div class="column">
+          <div class="kolom-titel">Meervoud</div>
+          <input type="text" id="input-3" autocomplete="off">
+          <input type="text" id="input-4" autocomplete="off">
+          <input type="text" id="input-5" autocomplete="off">
+        </div>
       </div>
     </div>
+
+    <!-- Tijdens nakijken tonen we dit dynamische veld per tijd -->
+    <div id="review-sectie" style="display:none;"></div>
 
     <div class="actie-container">
+      <div id="slider-container" class="slider-container">
+        <label class="switch">
+          <input type="checkbox" id="correct-slider">
+          <span class="slider"></span>
+        </label>
+        <span>Correcte antwoorden</span>
+      </div>
       <button id="doorgaan-knop" class="actie-knop">Doorgaan &rarr;</button>
-      <button id="herstart-knop" class="actie-knop">Nieuwe Toets</button>
+      <button id="herstart-knop" class="actie-knop">Opnieuw Maken</button>
     </div>
   </div>
 
@@ -457,6 +477,10 @@
 </div>
 
 <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+  }
+
   document.getElementById('open-menu').onclick = () => document.getElementById('zijbalk').classList.add('open');
   document.getElementById('sluit-menu').onclick = () => document.getElementById('zijbalk').classList.remove('open');
 
@@ -486,12 +510,16 @@
   const alleTitels = Object.keys(schema);
   let toetsSchemas = [];
   let userAnswers = {};
-  let huidigeIndex = 0;
+  
+  let huidigeIndex = 0; 
   let isNagekeken = false;
+  
+  let uniekeTijden = [];
+  let huidigeNakijkTijdIndex = 0;
 
-  const inputs = [];
+  const testInputs = [];
   for (let i = 0; i < 6; i++) {
-    inputs.push(document.getElementById(`input-${i}`));
+    testInputs.push(document.getElementById(`input-${i}`));
   }
 
   function splitsTitel(volledigeTitel) {
@@ -516,10 +544,18 @@
     return tijd;
   }
 
+  function sorteerGewicht(titel) {
+    if (titel.includes("Indicativus Actief")) return 1;
+    if (titel.includes("Conjunctivus Actief")) return 2;
+    if (titel.includes("Indicativus Passief")) return 3;
+    if (titel.includes("Conjunctivus Passief")) return 4;
+    return 5;
+  }
+
   function startNieuweToets() {
-    const tijden = Array.from(document.querySelectorAll('input[name="tijd"]:checked')).map(cb => cb.value);
-    const wijzen = Array.from(document.querySelectorAll('input[name="wijs"]:checked')).map(cb => cb.value);
-    const vormen = Array.from(document.querySelectorAll('input[name="vorm"]:checked')).map(cb => cb.value);
+    const tijden = Array.from(document.querySelectorAll('.filter-groep input[name="tijd"]:checked')).map(cb => cb.value);
+    const wijzen = Array.from(document.querySelectorAll('.filter-groep input[name="wijs"]:checked')).map(cb => cb.value);
+    const vormen = Array.from(document.querySelectorAll('.filter-groep input[name="vorm"]:checked')).map(cb => cb.value);
 
     toetsSchemas = alleTitels.filter(titel => {
       const heeftTijd = tijden.some(t => {
@@ -543,11 +579,7 @@
     if (toetsSchemas.length === 0) {
       container.style.display = 'none';
       leegBericht.style.display = 'block';
-      let ontbrekend = [];
-      if (tijden.length === 0) ontbrekend.push("tijd");
-      if (wijzen.length === 0) ontbrekend.push("wijs");
-      if (vormen.length === 0) ontbrekend.push("vorm");
-      leegBericht.textContent = ontbrekend.length > 0 ? "Selecteer een " + ontbrekend.join("/") : "Geen resultaten voor deze combinatie";
+      leegBericht.textContent = "Geen resultaten voor deze combinatie";
       return;
     }
 
@@ -555,7 +587,6 @@
     leegBericht.style.display = 'none';
 
     toetsSchemas.sort(() => Math.random() - 0.5);
-    
     userAnswers = {};
     toetsSchemas.forEach(titel => { userAnswers[titel] = ["", "", "", "", "", ""]; });
     
@@ -569,95 +600,56 @@
   function slaAntwoordenOp() {
     if(toetsSchemas.length === 0 || isNagekeken) return;
     const titel = toetsSchemas[huidigeIndex];
-    inputs.forEach((input, i) => {
+    testInputs.forEach((input, i) => {
       userAnswers[titel][i] = input.value;
     });
   }
 
   function laadVraag() {
     if(toetsSchemas.length === 0) return;
+    
+    document.getElementById('vraag-sectie').style.display = 'block';
+    document.getElementById('review-sectie').style.display = 'none';
+    
     const titel = toetsSchemas[huidigeIndex];
     const splitsing = splitsTitel(titel);
     
-    document.getElementById('titel-tijd').textContent = `${huidigeIndex + 1}/${toetsSchemas.length}. ${splitsing.tijd}`;
+    document.getElementById('hoofd-titel').textContent = `${huidigeIndex + 1}/${toetsSchemas.length}. ${splitsing.tijd}`;
     document.getElementById('titel-sub').textContent = splitsing.sub;
 
-    const isCorrectView = document.getElementById('correct-slider').checked;
-    if (isNagekeken) {
-      document.getElementById('slider-container').style.display = 'flex';
-    } else {
-      document.getElementById('slider-container').style.display = 'none';
-    }
-
-    inputs.forEach((input, i) => {
+    testInputs.forEach((input, i) => {
+      input.value = userAnswers[titel][i] || "";
       input.classList.remove('correct', 'fout', 'neutraal');
-      input.disabled = isNagekeken;
-
-      if (isNagekeken) {
-        if (isCorrectView) {
-          input.value = schema[titel][i];
-          input.classList.add('neutraal');
-        } else {
-          input.value = userAnswers[titel][i] || "";
-          if (input.value.trim().toLowerCase() === schema[titel][i]) {
-            input.classList.add('correct');
-          } else {
-            input.classList.add('fout');
-          }
-        }
-      } else {
-        input.value = userAnswers[titel][i] || "";
-        input.disabled = false;
-      }
+      input.disabled = false;
     });
 
     const btn = document.getElementById('doorgaan-knop');
-    if (isNagekeken) {
-      btn.style.display = 'none';
-      document.getElementById('herstart-knop').style.display = 'inline-block';
-      
-      const huidigeTijd = splitsTitel(toetsSchemas[huidigeIndex]).tijd;
-      const blokjes = document.querySelectorAll('.schema-blokje');
-      blokjes.forEach(blokje => {
-        if (blokje.dataset.tijd === huidigeTijd) {
-          blokje.classList.add('geselecteerd');
-        } else {
-          blokje.classList.remove('geselecteerd');
-        }
-      });
-      
+    btn.style.display = 'inline-block';
+    if (huidigeIndex === toetsSchemas.length - 1) {
+      btn.innerHTML = "Nakijken ✔"; 
     } else {
-      btn.style.display = 'inline-block';
-      document.getElementById('herstart-knop').style.display = 'none';
-      if (huidigeIndex === toetsSchemas.length - 1) {
-        btn.innerHTML = "Nakijken"; 
-      } else {
-        btn.innerHTML = "Doorgaan &rarr;";
-      }
-      inputs[0].focus();
+      btn.innerHTML = "Doorgaan &rarr;";
     }
+    testInputs[0].focus();
   }
-
-  document.getElementById('correct-slider').addEventListener('change', laadVraag);
 
   function bouwNavigatieEnKijkNa() {
     isNagekeken = true;
     document.getElementById('woots-balk').style.display = 'flex';
+    document.getElementById('slider-container').style.display = 'flex';
+    document.getElementById('doorgaan-knop').style.display = 'none';
+    document.getElementById('herstart-knop').style.display = 'inline-block';
+    
     const container = document.getElementById('nav-blokjes');
     container.innerHTML = '';
     
-    const uniekeTijden = [];
-    const startIndexPerTijd = {};
-    
-    toetsSchemas.forEach((titel, index) => {
+    uniekeTijden = [];
+    toetsSchemas.forEach((titel) => {
       const tijd = splitsTitel(titel).tijd;
-      if (!uniekeTijden.includes(tijd)) {
-        uniekeTijden.push(tijd);
-        startIndexPerTijd[tijd] = index; 
-      }
+      if (!uniekeTijden.includes(tijd)) uniekeTijden.push(tijd);
     });
 
-    uniekeTijden.forEach(tijd => {
+    uniekeTijden.forEach((tijd, index) => {
       const blokje = document.createElement('div');
       blokje.className = 'schema-blokje';
       blokje.dataset.tijd = tijd;
@@ -682,16 +674,90 @@
       else blokje.classList.add('rood');
 
       blokje.onclick = () => {
-        huidigeIndex = startIndexPerTijd[tijd];
-        laadVraag();
+        huidigeNakijkTijdIndex = index;
+        toonNakijkTijd();
       };
       
       container.appendChild(blokje);
     });
     
-    huidigeIndex = 0;
-    laadVraag();
+    huidigeNakijkTijdIndex = 0;
+    toonNakijkTijd();
   }
+
+  function toonNakijkTijd() {
+    document.getElementById('vraag-sectie').style.display = 'none';
+    const reviewSectie = document.getElementById('review-sectie');
+    reviewSectie.style.display = 'block';
+    reviewSectie.innerHTML = '';
+
+    const huidigeTijd = uniekeTijden[huidigeNakijkTijdIndex];
+    document.getElementById('hoofd-titel').textContent = huidigeTijd;
+
+    const isCorrectView = document.getElementById('correct-slider').checked;
+    
+    let schemasVanTijd = toetsSchemas.filter(s => splitsTitel(s).tijd === huidigeTijd);
+    schemasVanTijd.sort((a, b) => sorteerGewicht(a) - sorteerGewicht(b));
+
+    schemasVanTijd.forEach(titel => {
+      const sectie = document.createElement('div');
+      sectie.className = 'schema-sectie';
+
+      const sub = document.createElement('div');
+      sub.className = 'schema-subtitel';
+      sub.textContent = splitsTitel(titel).sub;
+      sectie.appendChild(sub);
+
+      const grid = document.createElement('div');
+      grid.className = 'grid';
+
+      const colEv = document.createElement('div');
+      colEv.className = 'column';
+      colEv.innerHTML = '<div class="kolom-titel">Enkelvoud</div>';
+      
+      const colMv = document.createElement('div');
+      colMv.className = 'column';
+      colMv.innerHTML = '<div class="kolom-titel">Meervoud</div>';
+
+      for (let i = 0; i < 6; i++) {
+        const inp = document.createElement('input');
+        inp.type = 'text';
+        inp.disabled = true;
+
+        if (isCorrectView) {
+          inp.value = schema[titel][i];
+          inp.className = 'neutraal';
+        } else {
+          const ans = userAnswers[titel][i] || "";
+          if (ans.trim().toLowerCase() === schema[titel][i]) {
+            inp.value = ans;
+            inp.className = 'correct';
+          } else {
+            inp.value = `${ans} (X: ${schema[titel][i]})`;
+            inp.className = 'fout';
+          }
+        }
+
+        if (i < 3) colEv.appendChild(inp);
+        else colMv.appendChild(inp);
+      }
+
+      grid.appendChild(colEv);
+      grid.appendChild(colMv);
+      sectie.appendChild(grid);
+      reviewSectie.appendChild(sectie);
+    });
+
+    const blokjes = document.querySelectorAll('.schema-blokje');
+    blokjes.forEach((blokje, idx) => {
+      if (idx === huidigeNakijkTijdIndex) blokje.classList.add('geselecteerd');
+      else blokje.classList.remove('geselecteerd');
+    });
+  }
+
+  document.getElementById('correct-slider').addEventListener('change', () => {
+    if (isNagekeken) toonNakijkTijd();
+  });
 
   document.getElementById('doorgaan-knop').onclick = () => {
     slaAntwoordenOp();
@@ -704,24 +770,38 @@
   };
 
   document.getElementById('vorige-vraag').onclick = () => {
-    if (huidigeIndex > 0) {
-      if (!isNagekeken) slaAntwoordenOp();
-      huidigeIndex--;
-      laadVraag();
+    if (isNagekeken) {
+      if (huidigeNakijkTijdIndex > 0) {
+        huidigeNakijkTijdIndex--;
+        toonNakijkTijd();
+      }
+    } else {
+      slaAntwoordenOp();
+      if (huidigeIndex > 0) {
+        huidigeIndex--;
+        laadVraag();
+      }
     }
   };
 
   document.getElementById('volgende-vraag').onclick = () => {
-    if (huidigeIndex < toetsSchemas.length - 1) {
-      if (!isNagekeken) slaAntwoordenOp();
-      huidigeIndex++;
-      laadVraag();
+    if (isNagekeken) {
+      if (huidigeNakijkTijdIndex < uniekeTijden.length - 1) {
+        huidigeNakijkTijdIndex++;
+        toonNakijkTijd();
+      }
+    } else {
+      slaAntwoordenOp();
+      if (huidigeIndex < toetsSchemas.length - 1) {
+        huidigeIndex++;
+        laadVraag();
+      }
     }
   };
 
   document.getElementById('herstart-knop').onclick = startNieuweToets;
 
-  document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+  document.querySelectorAll('.filter-groep input[type="checkbox"]').forEach(cb => {
     cb.addEventListener('change', startNieuweToets);
   });
 

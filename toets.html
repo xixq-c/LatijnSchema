@@ -3,187 +3,463 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Latijn Schema Trainer - Toetsen</title>
+<title>Latijn Grammatica - Toetsen</title>
 <style>
+  * { box-sizing: border-box; }
   body { 
     font-family: Arial, sans-serif; 
     display: flex; 
     margin: 0;
     min-height: 100vh;
-    background-color: #f4f4f9; 
+    background-color: #eef2f5;
+    color: #333;
   }
-  .zijbalk {
-    width: 250px;
+
+  /* Mobiele Topbalk */
+  .mobiel-header {
+    display: none;
     background-color: #2c3e50;
     color: white;
-    padding: 20px;
-    box-sizing: border-box;
+    padding: 15px 20px;
+    width: 100%;
+    align-items: center;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 100;
   }
-  .zijbalk h3 {
-    margin-top: 0;
-    color: #ecf0f1;
+  .hamburger {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 15px;
   }
-  .zijbalk a {
-    display: block;
-    color: #bdc3c7;
-    text-decoration: none;
-    padding: 10px 0;
-    font-weight: bold;
+  .mobiel-titel {
     font-size: 18px;
+    font-weight: bold;
   }
-  .zijbalk a:hover, .zijbalk a.actief {
-    color: #fff;
+
+  .zijbalk {
+    width: 260px;
+    background-color: #2c3e50;
+    color: white;
+    padding: 30px 20px;
+    flex-shrink: 0;
+    z-index: 10;
+    transition: transform 0.3s ease;
+  }
+  .sluit-menu {
+    display: none;
+    background: none;
+    border: none;
+    color: #ecf0f1;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 20px;
+    text-align: left;
+    padding: 0;
+  }
+  .zijbalk-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .zijbalk-nav a {
+    display: block;
+    background-color: #34495e;
+    color: #ecf0f1;
+    text-decoration: none;
+    padding: 12px 15px;
+    border-radius: 6px;
+    font-weight: bold;
+    border: 1px solid #2c3e50;
+    transition: 0.2s;
+  }
+  .zijbalk-nav a:hover { background-color: #3b536b; }
+  .zijbalk-nav a.actief {
+    background-color: #3498db;
+    border-color: #2980b9;
+    color: white;
   }
   .filter-menu {
-    margin-top: 30px;
-    background: #34495e;
+    margin-top: 40px;
+    background: #1a252f;
     padding: 15px;
-    border-radius: 8px;
+    border-radius: 6px;
   }
   details summary {
     font-weight: bold;
     cursor: pointer;
-    margin-bottom: 10px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
   }
+  details summary::-webkit-details-marker { display: none; }
   .filter-groep {
-    margin-bottom: 15px;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #2c3e50;
   }
   .filter-groep strong {
     display: block;
-    margin-bottom: 5px;
-    font-size: 14px;
+    margin-bottom: 10px;
+    font-size: 13px;
     color: #bdc3c7;
+    text-transform: uppercase;
   }
-  label {
-    display: block;
+  label.checkbox-label {
+    display: flex;
+    align-items: center;
     font-size: 14px;
-    margin-bottom: 3px;
+    margin-bottom: 8px;
     cursor: pointer;
+    color: #ecf0f1;
   }
+  label.checkbox-label input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #7f8c8d;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    background-color: transparent;
+    margin-right: 10px;
+    transition: 0.1s;
+  }
+  label.checkbox-label input[type="checkbox"]:checked {
+    background-color: #3498db;
+    border-color: #3498db;
+  }
+  label.checkbox-label input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    width: 4px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  
   .hoofdinhoud {
     flex: 1;
     display: flex; 
     flex-direction: column; 
+    justify-content: center;
     align-items: center; 
-    padding: 50px; 
+    padding: 20px; 
+    position: relative;
+    overflow-x: hidden;
   }
-  h2 { 
-    color: #333; 
-    margin-bottom: 30px;
+  .leeg-bericht {
+    display: none;
+    font-size: 24px;
+    font-weight: bold;
+    color: #cbd5e1;
     text-align: center;
-    min-height: 30px;
   }
+  .toets-card {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 90px; 
+  }
+
+  .slider-container {
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    font-weight: bold;
+    color: #34495e;
+    font-size: 14px;
+  }
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+  }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #bdc3c7;
+    transition: .3s;
+    border-radius: 24px;
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+  }
+  input:checked + .slider { background-color: #3498db; }
+  input:checked + .slider:before { transform: translateX(22px); }
+  
+  h2 { 
+    margin-top: 0;
+    margin-bottom: 5px;
+    text-align: center;
+    font-size: 26px;
+    color: #2c3e50;
+  }
+  .schema-subtitel {
+    font-size: 15px;
+    font-weight: bold;
+    color: #7f8c8d;
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
   .grid { 
     display: grid; 
     grid-template-columns: 1fr 1fr; 
     gap: 20px; 
     width: 100%;
-    max-width: 400px; 
-    margin-bottom: 30px;
+    margin-bottom: 25px;
   }
   .column { 
     display: flex; 
     flex-direction: column; 
-    gap: 15px; 
+    gap: 10px; 
+    min-width: 0;
   }
-  input { 
-    padding: 15px; 
-    font-size: 20px; 
+  .kolom-titel {
+    text-align: center;
+    font-size: 13px;
+    color: #7f8c8d;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+  }
+  input[type="text"] { 
+    width: 100%;
+    padding: 12px; 
+    font-size: 18px; 
     text-align: center; 
-    border: 2px solid #ccc; 
-    border-radius: 8px; 
+    border: 2px solid #bdc3c7; 
+    border-radius: 6px; 
     outline: none; 
-    transition: all 0.2s;
+    transition: 0.2s;
   }
-  input:focus {
-    border-color: #2196F3;
-  }
+  input[type="text"]:focus { border-color: #3498db; }
+  
   input.correct { 
-    border-color: #4CAF50; 
-    background-color: #e8f5e9; 
-    color: #2e7d32;
+    border-color: #2ecc71 !important; 
+    background-color: #eafaf1 !important; 
+    color: #27ae60 !important;
   }
   input.fout {
-    border-color: #f44336; 
-    background-color: #ffebee; 
-    color: #b71c1c;
+    border-color: #e74c3c !important; 
+    background-color: #fdedec !important; 
+    color: #c0392b !important;
+  }
+  input.neutraal {
+    border-color: #bdc3c7 !important;
+    background-color: #ffffff !important;
+    color: #333 !important;
+  }
+
+  .actie-container {
+    display: flex;
+    justify-content: flex-end; 
+    margin-top: 20px;
   }
   .actie-knop {
-    padding: 15px 30px;
-    font-size: 18px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
     color: white;
-    background-color: #2196F3;
+    background-color: #3498db;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: 0.2s;
   }
-  .actie-knop:hover {
-    background-color: #1976D2;
+  .actie-knop:hover { background-color: #2980b9; }
+  #herstart-knop { background-color: #7f8c8d; display: none; }
+  #herstart-knop:hover { background-color: #95a5a6; }
+
+  .woots-balk {
+    display: none; 
+    position: absolute;
+    bottom: 20px;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    max-width: 90%;
+    overflow-x: auto;
   }
-  #volgende-knop {
-    display: none;
-    background-color: #4CAF50;
+  .pijl-knop {
+    background: #ecf0f1;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    color: #2c3e50;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 8px 12px;
   }
-  #volgende-knop:hover {
-    background-color: #388E3C;
+  .pijl-knop:hover { background: #bdc3c7; }
+  .blokjes-container { display: flex; gap: 6px; }
+  .schema-blokje {
+    background: #f8f9fa;
+    border: 2px solid #bdc3c7;
+    color: #2c3e50;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    min-width: 70px;
+    text-align: center;
+  }
+  .schema-blokje.geselecteerd { border-color: #3498db; background: #ebf5fb; box-shadow: 0 0 0 2px rgba(52,152,219,0.3); }
+  .schema-blokje.groen { background: #2ecc71; color: white; border-color: #27ae60; }
+  .schema-blokje.oranje { background: #e67e22; color: white; border-color: #d35400; }
+  .schema-blokje.rood { background: #e74c3c; color: white; border-color: #c0392b; }
+
+  @media (max-width: 768px) {
+    .mobiel-header { display: flex; }
+    .hoofdinhoud { padding-top: 80px; }
+    .zijbalk {
+      position: fixed;
+      top: 0; left: 0;
+      height: 100vh;
+      width: 100%;
+      transform: translateX(-100%);
+      overflow-y: auto;
+    }
+    .zijbalk.open { transform: translateX(0); }
+    .sluit-menu { display: block; }
+    .toets-card { padding: 20px; margin-bottom: 110px; }
+    .grid { gap: 10px; }
+    input[type="text"] { padding: 10px; font-size: 16px; }
+    .woots-balk {
+      position: fixed;
+      bottom: 10px;
+      padding: 10px;
+      width: 95%;
+    }
   }
 </style>
 </head>
 <body>
 
-<div class="zijbalk">
-  <h3>Menu</h3>
-  <a href="index.html">Oefenen</a>
-  <a href="toets.html" class="actief">Toetsen</a>
+<div class="mobiel-header">
+  <button class="hamburger" id="open-menu">☰</button>
+  <div class="mobiel-titel">Latijn Grammatica | Toets</div>
+</div>
+
+<div class="zijbalk" id="zijbalk">
+  <button class="sluit-menu" id="sluit-menu">&larr; Sluiten</button>
+
+  <div class="zijbalk-nav">
+    <a href="index.html">Oefenen</a>
+    <a href="toets.html" class="actief">Toetsen</a>
+  </div>
   
   <div class="filter-menu">
     <details open>
-      <summary>Filters Instellen</summary>
+      <summary>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+        Filteren
+      </summary>
       <div class="filter-groep">
         <strong>Tijden</strong>
-        <label><input type="checkbox" name="tijd" value="Praesens" checked> Praesens</label>
-        <label><input type="checkbox" name="tijd" value="Imperfectum" checked> Imperfectum</label>
-        <label><input type="checkbox" name="tijd" value="Futurum" checked> Futurum</label>
-        <label><input type="checkbox" name="tijd" value="Perfectum" checked> Perfectum</label>
-        <label><input type="checkbox" name="tijd" value="Plusquamperfectum" checked> Plusquamperfectum</label>
-        <label><input type="checkbox" name="tijd" value="Futurum Exactum" checked> Futurum Exactum</label>
+        <label class="checkbox-label"><input type="checkbox" name="tijd" value="Praesens" checked> Praesens</label>
+        <label class="checkbox-label"><input type="checkbox" name="tijd" value="Imperfectum" checked> Imperfectum</label>
+        <label class="checkbox-label"><input type="checkbox" name="tijd" value="Futurum" checked> Futurum</label>
+        <label class="checkbox-label"><input type="checkbox" name="tijd" value="Perfectum" checked> Perfectum</label>
+        <label class="checkbox-label"><input type="checkbox" name="tijd" value="Plusquamperfectum" checked> Plusquamperfectum</label>
+        <label class="checkbox-label"><input type="checkbox" name="tijd" value="Futurum Exactum" checked> Futurum Exactum</label>
       </div>
       <div class="filter-groep">
         <strong>Wijs</strong>
-        <label><input type="checkbox" name="wijs" value="Indicativus" checked> Indicativus</label>
-        <label><input type="checkbox" name="wijs" value="Conjunctivus" checked> Conjunctivus</label>
+        <label class="checkbox-label"><input type="checkbox" name="wijs" value="Indicativus" checked> Indicativus</label>
+        <label class="checkbox-label"><input type="checkbox" name="wijs" value="Conjunctivus" checked> Conjunctivus</label>
       </div>
       <div class="filter-groep">
         <strong>Vorm</strong>
-        <label><input type="checkbox" name="vorm" value="Actief" checked> Actief</label>
-        <label><input type="checkbox" name="vorm" value="Passief" checked> Passief</label>
+        <label class="checkbox-label"><input type="checkbox" name="vorm" value="Actief" checked> Actief</label>
+        <label class="checkbox-label"><input type="checkbox" name="vorm" value="Passief" checked> Passief</label>
       </div>
     </details>
   </div>
 </div>
 
 <div class="hoofdinhoud">
-  <h2 id="titel">Laden...</h2>
+  <div id="leeg-bericht" class="leeg-bericht">Selecteer een tijd/wijs/vorm</div>
 
-  <div class="grid">
-    <div class="column">
-      <input type="text" id="input-0" autocomplete="off" placeholder="1e ev">
-      <input type="text" id="input-1" autocomplete="off" placeholder="2e ev">
-      <input type="text" id="input-2" autocomplete="off" placeholder="3e ev">
+  <div id="toets-container" class="toets-card">
+    
+    <div id="slider-container" class="slider-container">
+      <span>Jouw antwoorden</span>
+      <label class="switch">
+        <input type="checkbox" id="correct-slider">
+        <span class="slider"></span>
+      </label>
+      <span>Correcte antwoorden</span>
     </div>
-    <div class="column">
-      <input type="text" id="input-3" autocomplete="off" placeholder="1e mv">
-      <input type="text" id="input-4" autocomplete="off" placeholder="2e mv">
-      <input type="text" id="input-5" autocomplete="off" placeholder="3e mv">
+
+    <h2 id="titel-tijd">Laden...</h2>
+    <div id="titel-sub" class="schema-subtitel"></div>
+
+    <div class="grid">
+      <div class="column">
+        <div class="kolom-titel">Enkelvoud</div>
+        <input type="text" id="input-0" autocomplete="off">
+        <input type="text" id="input-1" autocomplete="off">
+        <input type="text" id="input-2" autocomplete="off">
+      </div>
+      <div class="column">
+        <div class="kolom-titel">Meervoud</div>
+        <input type="text" id="input-3" autocomplete="off">
+        <input type="text" id="input-4" autocomplete="off">
+        <input type="text" id="input-5" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="actie-container">
+      <button id="doorgaan-knop" class="actie-knop">Doorgaan &rarr;</button>
+      <button id="herstart-knop" class="actie-knop">Nieuwe Toets</button>
     </div>
   </div>
 
-  <button id="nakijk-knop" class="actie-knop">Nakijken</button>
-  <button id="volgende-knop" class="actie-knop">Volgende schema</button>
+  <div id="woots-balk" class="woots-balk">
+    <button class="pijl-knop" id="vorige-vraag">&lt;</button>
+    <div class="blokjes-container" id="nav-blokjes"></div>
+    <button class="pijl-knop" id="volgende-vraag">&gt;</button>
+  </div>
 </div>
 
 <script>
+  document.getElementById('open-menu').onclick = () => document.getElementById('zijbalk').classList.add('open');
+  document.getElementById('sluit-menu').onclick = () => document.getElementById('zijbalk').classList.remove('open');
+
   const schema = {
     "Praesens Indicativus Actief": ["o", "s", "t", "mus", "tis", "nt"],
     "Praesens Conjunctivus Actief": ["m", "s", "t", "mus", "tis", "nt"],
@@ -208,23 +484,44 @@
   };
 
   const alleTitels = Object.keys(schema);
-  let huidigeTitel = "";
-  let huidigeAntwoorden = [];
-  const inputs = [];
+  let toetsSchemas = [];
+  let userAnswers = {};
+  let huidigeIndex = 0;
+  let isNagekeken = false;
 
+  const inputs = [];
   for (let i = 0; i < 6; i++) {
     inputs.push(document.getElementById(`input-${i}`));
   }
 
-  const nakijkKnop = document.getElementById('nakijk-knop');
-  const volgendeKnop = document.getElementById('volgende-knop');
+  function splitsTitel(volledigeTitel) {
+    const tijden = ["Praesens", "Imperfectum", "Futurum Exactum", "Futurum", "Perfectum", "Plusquamperfectum"];
+    let gevondenTijd = "";
+    for (let t of tijden) {
+      if (volledigeTitel.includes(t)) {
+        gevondenTijd = t;
+        break;
+      }
+    }
+    return { tijd: gevondenTijd, sub: volledigeTitel.replace(gevondenTijd, "").trim() };
+  }
 
-  function getGefilterdeTitels() {
+  function maakAfkorting(tijd) {
+    if (tijd === "Praesens") return "Praes";
+    if (tijd === "Imperfectum") return "Imperf";
+    if (tijd === "Futurum") return "Fut";
+    if (tijd === "Perfectum") return "Perf";
+    if (tijd === "Plusquamperfectum") return "PQP";
+    if (tijd === "Futurum Exactum") return "Futex";
+    return tijd;
+  }
+
+  function startNieuweToets() {
     const tijden = Array.from(document.querySelectorAll('input[name="tijd"]:checked')).map(cb => cb.value);
     const wijzen = Array.from(document.querySelectorAll('input[name="wijs"]:checked')).map(cb => cb.value);
     const vormen = Array.from(document.querySelectorAll('input[name="vorm"]:checked')).map(cb => cb.value);
 
-    return alleTitels.filter(titel => {
+    toetsSchemas = alleTitels.filter(titel => {
       const heeftTijd = tijden.some(t => {
         if (t === "Futurum") return titel.includes("Futurum") && !titel.includes("Exactum");
         return titel.includes(t);
@@ -233,57 +530,200 @@
       const heeftVorm = vormen.some(v => titel.includes(v));
       return heeftTijd && heeftWijs && heeftVorm;
     });
-  }
 
-  function startNieuweToets() {
-    const gefilterdeTitels = getGefilterdeTitels();
-    
-    if (gefilterdeTitels.length === 0) {
-      document.getElementById('titel').textContent = "Geen schema's gevonden met deze filters!";
-      inputs.forEach(input => { input.disabled = true; input.value = ""; input.classList.remove('correct', 'fout'); });
-      nakijkKnop.style.display = 'none';
-      volgendeKnop.style.display = 'none';
+    const leegBericht = document.getElementById('leeg-bericht');
+    const container = document.getElementById('toets-container');
+    const balk = document.getElementById('woots-balk');
+    const sliderContainer = document.getElementById('slider-container');
+
+    balk.style.display = 'none';
+    sliderContainer.style.display = 'none';
+    document.getElementById('correct-slider').checked = false;
+
+    if (toetsSchemas.length === 0) {
+      container.style.display = 'none';
+      leegBericht.style.display = 'block';
+      let ontbrekend = [];
+      if (tijden.length === 0) ontbrekend.push("tijd");
+      if (wijzen.length === 0) ontbrekend.push("wijs");
+      if (vormen.length === 0) ontbrekend.push("vorm");
+      leegBericht.textContent = ontbrekend.length > 0 ? "Selecteer een " + ontbrekend.join("/") : "Geen resultaten voor deze combinatie";
       return;
     }
 
-    huidigeTitel = gefilterdeTitels[Math.floor(Math.random() * gefilterdeTitels.length)];
-    huidigeAntwoorden = schema[huidigeTitel];
-    document.getElementById('titel').textContent = huidigeTitel;
+    container.style.display = 'block';
+    leegBericht.style.display = 'none';
 
-    inputs.forEach(input => {
-      input.value = "";
-      input.disabled = false;
-      input.classList.remove('correct', 'fout');
-    });
+    toetsSchemas.sort(() => Math.random() - 0.5);
     
-    nakijkKnop.style.display = 'block';
-    volgendeKnop.style.display = 'none';
-    inputs[0].focus();
+    userAnswers = {};
+    toetsSchemas.forEach(titel => { userAnswers[titel] = ["", "", "", "", "", ""]; });
+    
+    huidigeIndex = 0;
+    isNagekeken = false;
+    
+    document.getElementById('herstart-knop').style.display = 'none';
+    laadVraag();
   }
 
-  // Zorg dat de pagina een nieuw schema pakt zodra je de filters aanpast
-  document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-    cb.addEventListener('change', startNieuweToets);
-  });
+  function slaAntwoordenOp() {
+    if(toetsSchemas.length === 0 || isNagekeken) return;
+    const titel = toetsSchemas[huidigeIndex];
+    inputs.forEach((input, i) => {
+      userAnswers[titel][i] = input.value;
+    });
+  }
 
-  nakijkKnop.addEventListener('click', () => {
-    inputs.forEach((input, index) => {
-      const ingevuldeWaarde = input.value.trim().toLowerCase();
-      input.disabled = true; 
-      
-      if (ingevuldeWaarde === huidigeAntwoorden[index]) {
-        input.classList.add('correct');
+  function laadVraag() {
+    if(toetsSchemas.length === 0) return;
+    const titel = toetsSchemas[huidigeIndex];
+    const splitsing = splitsTitel(titel);
+    
+    document.getElementById('titel-tijd').textContent = `${huidigeIndex + 1}/${toetsSchemas.length}. ${splitsing.tijd}`;
+    document.getElementById('titel-sub').textContent = splitsing.sub;
+
+    const isCorrectView = document.getElementById('correct-slider').checked;
+    if (isNagekeken) {
+      document.getElementById('slider-container').style.display = 'flex';
+    } else {
+      document.getElementById('slider-container').style.display = 'none';
+    }
+
+    inputs.forEach((input, i) => {
+      input.classList.remove('correct', 'fout', 'neutraal');
+      input.disabled = isNagekeken;
+
+      if (isNagekeken) {
+        if (isCorrectView) {
+          input.value = schema[titel][i];
+          input.classList.add('neutraal');
+        } else {
+          input.value = userAnswers[titel][i] || "";
+          if (input.value.trim().toLowerCase() === schema[titel][i]) {
+            input.classList.add('correct');
+          } else {
+            input.classList.add('fout');
+          }
+        }
       } else {
-        input.classList.add('fout');
-        input.value = `${input.value} (X: ${huidigeAntwoorden[index]})`;
+        input.value = userAnswers[titel][i] || "";
+        input.disabled = false;
       }
     });
 
-    nakijkKnop.style.display = 'none';
-    volgendeKnop.style.display = 'block';
-  });
+    const btn = document.getElementById('doorgaan-knop');
+    if (isNagekeken) {
+      btn.style.display = 'none';
+      document.getElementById('herstart-knop').style.display = 'inline-block';
+      
+      const huidigeTijd = splitsTitel(toetsSchemas[huidigeIndex]).tijd;
+      const blokjes = document.querySelectorAll('.schema-blokje');
+      blokjes.forEach(blokje => {
+        if (blokje.dataset.tijd === huidigeTijd) {
+          blokje.classList.add('geselecteerd');
+        } else {
+          blokje.classList.remove('geselecteerd');
+        }
+      });
+      
+    } else {
+      btn.style.display = 'inline-block';
+      document.getElementById('herstart-knop').style.display = 'none';
+      if (huidigeIndex === toetsSchemas.length - 1) {
+        btn.innerHTML = "Nakijken"; 
+      } else {
+        btn.innerHTML = "Doorgaan &rarr;";
+      }
+      inputs[0].focus();
+    }
+  }
 
-  volgendeKnop.addEventListener('click', startNieuweToets);
+  document.getElementById('correct-slider').addEventListener('change', laadVraag);
+
+  function bouwNavigatieEnKijkNa() {
+    isNagekeken = true;
+    document.getElementById('woots-balk').style.display = 'flex';
+    const container = document.getElementById('nav-blokjes');
+    container.innerHTML = '';
+    
+    const uniekeTijden = [];
+    const startIndexPerTijd = {};
+    
+    toetsSchemas.forEach((titel, index) => {
+      const tijd = splitsTitel(titel).tijd;
+      if (!uniekeTijden.includes(tijd)) {
+        uniekeTijden.push(tijd);
+        startIndexPerTijd[tijd] = index; 
+      }
+    });
+
+    uniekeTijden.forEach(tijd => {
+      const blokje = document.createElement('div');
+      blokje.className = 'schema-blokje';
+      blokje.dataset.tijd = tijd;
+      blokje.textContent = maakAfkorting(tijd);
+      
+      let aantalFouten = 0;
+      let totaalAntwoorden = 0;
+
+      toetsSchemas.forEach(schemaNaam => {
+        if (splitsTitel(schemaNaam).tijd === tijd) {
+          totaalAntwoorden += 6;
+          for (let i = 0; i < 6; i++) {
+            if (userAnswers[schemaNaam][i].trim().toLowerCase() !== schema[schemaNaam][i]) {
+              aantalFouten++;
+            }
+          }
+        }
+      });
+      
+      if (aantalFouten === 0) blokje.classList.add('groen');
+      else if (aantalFouten <= (totaalAntwoorden / 3)) blokje.classList.add('oranje');
+      else blokje.classList.add('rood');
+
+      blokje.onclick = () => {
+        huidigeIndex = startIndexPerTijd[tijd];
+        laadVraag();
+      };
+      
+      container.appendChild(blokje);
+    });
+    
+    huidigeIndex = 0;
+    laadVraag();
+  }
+
+  document.getElementById('doorgaan-knop').onclick = () => {
+    slaAntwoordenOp();
+    if (huidigeIndex < toetsSchemas.length - 1) {
+      huidigeIndex++;
+      laadVraag();
+    } else {
+      bouwNavigatieEnKijkNa();
+    }
+  };
+
+  document.getElementById('vorige-vraag').onclick = () => {
+    if (huidigeIndex > 0) {
+      if (!isNagekeken) slaAntwoordenOp();
+      huidigeIndex--;
+      laadVraag();
+    }
+  };
+
+  document.getElementById('volgende-vraag').onclick = () => {
+    if (huidigeIndex < toetsSchemas.length - 1) {
+      if (!isNagekeken) slaAntwoordenOp();
+      huidigeIndex++;
+      laadVraag();
+    }
+  };
+
+  document.getElementById('herstart-knop').onclick = startNieuweToets;
+
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', startNieuweToets);
+  });
 
   startNieuweToets();
 </script>

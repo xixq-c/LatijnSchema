@@ -3,31 +3,69 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Latijn Schema Trainer - Toetsmodus</title>
+<title>Latijn Schema Trainer - Toetsen</title>
 <style>
   body { 
     font-family: Arial, sans-serif; 
     display: flex; 
+    margin: 0;
+    min-height: 100vh;
+    background-color: #f4f4f9; 
+  }
+  .zijbalk {
+    width: 250px;
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .zijbalk h3 {
+    margin-top: 0;
+    color: #ecf0f1;
+  }
+  .zijbalk a {
+    display: block;
+    color: #bdc3c7;
+    text-decoration: none;
+    padding: 10px 0;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .zijbalk a:hover, .zijbalk a.actief {
+    color: #fff;
+  }
+  .filter-menu {
+    margin-top: 30px;
+    background: #34495e;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  details summary {
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  .filter-groep {
+    margin-bottom: 15px;
+  }
+  .filter-groep strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #bdc3c7;
+  }
+  label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 3px;
+    cursor: pointer;
+  }
+  .hoofdinhoud {
+    flex: 1;
+    display: flex; 
     flex-direction: column; 
     align-items: center; 
     padding: 50px; 
-    background-color: #f4f4f9; 
-  }
-  .nav-knop {
-    background-color: #9c27b0;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: none;
-    margin-bottom: 20px;
-    transition: background-color 0.2s;
-  }
-  .nav-knop:hover {
-    background-color: #7b1fa2;
   }
   h2 { 
     color: #333; 
@@ -94,25 +132,56 @@
 </head>
 <body>
 
-<a href="index.html"><button class="nav-knop">🧠 Naar Oefenmodus</button></a>
-
-<h2 id="titel">Laden...</h2>
-
-<div class="grid">
-  <div class="column">
-    <input type="text" id="input-0" autocomplete="off" placeholder="1e ev">
-    <input type="text" id="input-1" autocomplete="off" placeholder="2e ev">
-    <input type="text" id="input-2" autocomplete="off" placeholder="3e ev">
-  </div>
-  <div class="column">
-    <input type="text" id="input-3" autocomplete="off" placeholder="1e mv">
-    <input type="text" id="input-4" autocomplete="off" placeholder="2e mv">
-    <input type="text" id="input-5" autocomplete="off" placeholder="3e mv">
+<div class="zijbalk">
+  <h3>Menu</h3>
+  <a href="index.html">Oefenen</a>
+  <a href="toets.html" class="actief">Toetsen</a>
+  
+  <div class="filter-menu">
+    <details open>
+      <summary>Filters Instellen</summary>
+      <div class="filter-groep">
+        <strong>Tijden</strong>
+        <label><input type="checkbox" name="tijd" value="Praesens" checked> Praesens</label>
+        <label><input type="checkbox" name="tijd" value="Imperfectum" checked> Imperfectum</label>
+        <label><input type="checkbox" name="tijd" value="Futurum" checked> Futurum</label>
+        <label><input type="checkbox" name="tijd" value="Perfectum" checked> Perfectum</label>
+        <label><input type="checkbox" name="tijd" value="Plusquamperfectum" checked> Plusquamperfectum</label>
+        <label><input type="checkbox" name="tijd" value="Futurum Exactum" checked> Futurum Exactum</label>
+      </div>
+      <div class="filter-groep">
+        <strong>Wijs</strong>
+        <label><input type="checkbox" name="wijs" value="Indicativus" checked> Indicativus</label>
+        <label><input type="checkbox" name="wijs" value="Conjunctivus" checked> Conjunctivus</label>
+      </div>
+      <div class="filter-groep">
+        <strong>Vorm</strong>
+        <label><input type="checkbox" name="vorm" value="Actief" checked> Actief</label>
+        <label><input type="checkbox" name="vorm" value="Passief" checked> Passief</label>
+      </div>
+    </details>
   </div>
 </div>
 
-<button id="nakijk-knop" class="actie-knop">Nakijken</button>
-<button id="volgende-knop" class="actie-knop">Volgende schema</button>
+<div class="hoofdinhoud">
+  <h2 id="titel">Laden...</h2>
+
+  <div class="grid">
+    <div class="column">
+      <input type="text" id="input-0" autocomplete="off" placeholder="1e ev">
+      <input type="text" id="input-1" autocomplete="off" placeholder="2e ev">
+      <input type="text" id="input-2" autocomplete="off" placeholder="3e ev">
+    </div>
+    <div class="column">
+      <input type="text" id="input-3" autocomplete="off" placeholder="1e mv">
+      <input type="text" id="input-4" autocomplete="off" placeholder="2e mv">
+      <input type="text" id="input-5" autocomplete="off" placeholder="3e mv">
+    </div>
+  </div>
+
+  <button id="nakijk-knop" class="actie-knop">Nakijken</button>
+  <button id="volgende-knop" class="actie-knop">Volgende schema</button>
+</div>
 
 <script>
   const schema = {
@@ -138,7 +207,7 @@
     "Futurum Exactum Indicativus Passief": ["ero", "eris", "erit", "erimus", "eritis", "erunt"]
   };
 
-  const titels = Object.keys(schema);
+  const alleTitels = Object.keys(schema);
   let huidigeTitel = "";
   let huidigeAntwoorden = [];
   const inputs = [];
@@ -150,10 +219,35 @@
   const nakijkKnop = document.getElementById('nakijk-knop');
   const volgendeKnop = document.getElementById('volgende-knop');
 
+  function getGefilterdeTitels() {
+    const tijden = Array.from(document.querySelectorAll('input[name="tijd"]:checked')).map(cb => cb.value);
+    const wijzen = Array.from(document.querySelectorAll('input[name="wijs"]:checked')).map(cb => cb.value);
+    const vormen = Array.from(document.querySelectorAll('input[name="vorm"]:checked')).map(cb => cb.value);
+
+    return alleTitels.filter(titel => {
+      const heeftTijd = tijden.some(t => {
+        if (t === "Futurum") return titel.includes("Futurum") && !titel.includes("Exactum");
+        return titel.includes(t);
+      });
+      const heeftWijs = wijzen.some(w => titel.includes(w));
+      const heeftVorm = vormen.some(v => titel.includes(v));
+      return heeftTijd && heeftWijs && heeftVorm;
+    });
+  }
+
   function startNieuweToets() {
-    huidigeTitel = titels[Math.floor(Math.random() * titels.length)];
-    huidigeAntwoorden = schema[huidigeTitel];
+    const gefilterdeTitels = getGefilterdeTitels();
     
+    if (gefilterdeTitels.length === 0) {
+      document.getElementById('titel').textContent = "Geen schema's gevonden met deze filters!";
+      inputs.forEach(input => { input.disabled = true; input.value = ""; input.classList.remove('correct', 'fout'); });
+      nakijkKnop.style.display = 'none';
+      volgendeKnop.style.display = 'none';
+      return;
+    }
+
+    huidigeTitel = gefilterdeTitels[Math.floor(Math.random() * gefilterdeTitels.length)];
+    huidigeAntwoorden = schema[huidigeTitel];
     document.getElementById('titel').textContent = huidigeTitel;
 
     inputs.forEach(input => {
@@ -166,6 +260,11 @@
     volgendeKnop.style.display = 'none';
     inputs[0].focus();
   }
+
+  // Zorg dat de pagina een nieuw schema pakt zodra je de filters aanpast
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', startNieuweToets);
+  });
 
   nakijkKnop.addEventListener('click', () => {
     inputs.forEach((input, index) => {

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latijn Schema Trainer - Oefenmodus</title>
+<style>
+  body { 
+    font-family: Arial, sans-serif; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    padding: 50px; 
+    background-color: #f4f4f9; 
+  }
+  .nav-knop {
+    background-color: #9c27b0;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    margin-bottom: 20px;
+    transition: background-color 0.2s;
+  }
+  .nav-knop:hover {
+    background-color: #7b1fa2;
+  }
+  h2 { 
+    color: #333; 
+    margin-bottom: 30px;
+    text-align: center;
+    min-height: 30px;
+  }
+  .grid { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 20px; 
+    width: 100%;
+    max-width: 400px; 
+  }
+  .column { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 15px; 
+  }
+  input { 
+    padding: 15px; 
+    font-size: 20px; 
+    text-align: center; 
+    border: 2px solid #ccc; 
+    border-radius: 8px; 
+    outline: none; 
+    transition: all 0.2s;
+  }
+  input:focus {
+    border-color: #2196F3;
+  }
+  input.correct { 
+    border-color: #4CAF50; 
+    background-color: #e8f5e9; 
+    color: #2e7d32;
+  }
+</style>
+</head>
+<body>
+
+<a href="toets.html"><button class="nav-knop">📝 Naar Toetsmodus</button></a>
+
+<h2 id="titel">Laden...</h2>
+
+<div class="grid">
+  <div class="column">
+    <input type="text" id="input-0" autocomplete="off" placeholder="1e ev">
+    <input type="text" id="input-1" autocomplete="off" placeholder="2e ev">
+    <input type="text" id="input-2" autocomplete="off" placeholder="3e ev">
+  </div>
+  <div class="column">
+    <input type="text" id="input-3" autocomplete="off" placeholder="1e mv">
+    <input type="text" id="input-4" autocomplete="off" placeholder="2e mv">
+    <input type="text" id="input-5" autocomplete="off" placeholder="3e mv">
+  </div>
+</div>
+
+<script>
+  const schema = {
+    "Praesens Indicativus Actief": ["o", "s", "t", "mus", "tis", "nt"],
+    "Praesens Conjunctivus Actief": ["m", "s", "t", "mus", "tis", "nt"],
+    "Imperfectum Indicativus Actief": ["bam", "bas", "bat", "bamus", "batis", "bant"],
+    "Imperfectum Conjunctivus Actief": ["rem", "res", "ret", "remus", "retis", "rent"],
+    "Futurum Indicativus Actief": ["bo", "bis", "bit", "bimus", "bitis", "bunt"],
+    "Perfectum Indicativus Actief": ["i", "isti", "it", "imus", "istis", "erunt"],
+    "Perfectum Conjunctivus Actief": ["erim", "eris", "erit", "erimus", "eritis", "erint"],
+    "Plusquamperfectum Indicativus Actief": ["eram", "eras", "erat", "eramus", "eratis", "erant"],
+    "Plusquamperfectum Conjunctivus Actief": ["issem", "isses", "isset", "issemus", "issetis", "issent"],
+    "Futurum Exactum Indicativus Actief": ["ero", "eris", "erit", "erimus", "eritis", "erint"],
+    "Praesens Indicativus Passief": ["or", "ris", "tur", "mur", "mini", "ntur"],
+    "Praesens Conjunctivus Passief": ["r", "ris", "tur", "mur", "mini", "ntur"],
+    "Imperfectum Indicativus Passief": ["bar", "baris", "batur", "bamur", "bamini", "bantur"],
+    "Imperfectum Conjunctivus Passief": ["rer", "reris", "retur", "remur", "remini", "rentur"],
+    "Futurum Indicativus Passief": ["bor", "beris", "bitur", "bimur", "bimini", "buntur"],
+    "Perfectum Indicativus Passief": ["sum", "es", "est", "sumus", "estis", "sunt"],
+    "Perfectum Conjunctivus Passief": ["sim", "sis", "sit", "simus", "sitis", "sint"],
+    "Plusquamperfectum Indicativus Passief": ["eram", "eras", "erat", "eramus", "eratis", "erant"],
+    "Plusquamperfectum Conjunctivus Passief": ["essem", "esses", "esset", "essemus", "essetis", "essent"],
+    "Futurum Exactum Indicativus Passief": ["ero", "eris", "erit", "erimus", "eritis", "erunt"]
+  };
+
+  const titels = Object.keys(schema);
+  let huidigeTitel = "";
+  let huidigeAntwoorden = [];
+  let correcteAantallen = 0;
+  const inputs = [];
+
+  for (let i = 0; i < 6; i++) {
+    inputs.push(document.getElementById(`input-${i}`));
+  }
+
+  function startNieuweRonde() {
+    huidigeTitel = titels[Math.floor(Math.random() * titels.length)];
+    huidigeAntwoorden = schema[huidigeTitel];
+    
+    document.getElementById('titel').textContent = huidigeTitel;
+    correcteAantallen = 0;
+
+    inputs.forEach(input => {
+      input.value = "";
+      input.disabled = false;
+      input.classList.remove('correct');
+    });
+    
+    inputs[0].focus();
+  }
+
+  inputs.forEach((input, index) => {
+    input.addEventListener('input', (e) => {
+      const ingevuldeWaarde = e.target.value.trim().toLowerCase();
+      
+      if (ingevuldeWaarde === huidigeAntwoorden[index]) {
+        input.classList.add('correct');
+        input.disabled = true;
+        correcteAantallen++;
+        
+        if (correcteAantallen === 6) {
+          setTimeout(startNieuweRonde, 1000);
+        } else {
+          let nextIndex = (index + 1) % 6;
+          while (inputs[nextIndex].disabled && correcteAantallen < 6) {
+             nextIndex = (nextIndex + 1) % 6;
+          }
+          inputs[nextIndex].focus();
+        }
+      }
+    });
+  });
+
+  startNieuweRonde();
+</script>
+</body>
+</html>
